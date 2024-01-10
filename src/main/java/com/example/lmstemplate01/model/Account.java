@@ -34,7 +34,7 @@ public class Account {
         return Account.of(accountDTO.getAccountName(), accountDTO.getPassword(), accountDTO.getEmail());
     }
     public AccountDTO toAccountDTO(){
-        return new AccountDTO(accountName, password, email);
+        return new AccountDTO(id, accountName, password, email);
     }
 
 }
