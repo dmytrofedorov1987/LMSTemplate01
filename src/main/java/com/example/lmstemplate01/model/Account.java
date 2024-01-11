@@ -33,7 +33,8 @@ public class Account {
     public static Account fromAccountDTO(AccountDTO accountDTO) {
         return Account.of(accountDTO.getAccountName(), accountDTO.getPassword(), accountDTO.getEmail());
     }
-    public AccountDTO toAccountDTO(){
+
+    public AccountDTO toAccountDTO() {
         return new AccountDTO(id, accountName, password, email);
     }
 
