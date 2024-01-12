@@ -10,22 +10,22 @@ import lombok.Data;
 @Data
 public class AccountDTO {
     private Long id;
-    private String accountName;
+    private String username;
     private String password;
     private String email;
 
     @JsonCreator
-    public AccountDTO(@JsonProperty String accountName,
+    public AccountDTO(@JsonProperty String username,
                       @JsonProperty String password,
                       @JsonProperty String email) {
-        this.accountName = accountName;
+        this.username = username;
         this.password = password;
         this.email = email;
     }
 
-    public AccountDTO(Long id, String accountName, String password, String email) {
+    public AccountDTO(Long id, String username, String password, String email) {
         this.id = id;
-        this.accountName = accountName;
+        this.username = username;
         this.password = password;
         this.email = email;
     }

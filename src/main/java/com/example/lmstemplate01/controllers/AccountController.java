@@ -46,6 +46,7 @@ public class AccountController {
 
     /**
      * The method throws an exception if it receives uncorrected JSON or null.
+     * @return ResponseEntity
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ResultDTO> handleException() {

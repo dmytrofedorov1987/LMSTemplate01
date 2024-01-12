@@ -4,6 +4,9 @@ import com.example.lmstemplate01.dto.AccountDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 public class Account {
@@ -11,31 +14,33 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private String accountName;
+    private String username;
     @Column(nullable = false)
     private String password;
     @Column(nullable = false)
     private String email;
+    @OneToMany(mappedBy = "account")
+    private List<Role> roles = new ArrayList<>();
 
     public Account() {
     }
 
-    public Account(String accountName, String password, String email) {
-        this.accountName = accountName;
+    public Account(String username, String password, String email) {
+        this.username = username;
         this.password = password;
         this.email = email;
     }
 
-    public static Account of(String accountName, String password, String email) {
-        return new Account(accountName, password, email);
+    public static Account of(String username, String password, String email) {
+        return new Account(username, password, email);
     }
 
     public static Account fromAccountDTO(AccountDTO accountDTO) {
-        return Account.of(accountDTO.getAccountName(), accountDTO.getPassword(), accountDTO.getEmail());
+        return Account.of(accountDTO.getUsername(), accountDTO.getPassword(), accountDTO.getEmail());
     }
 
     public AccountDTO toAccountDTO() {
-        return new AccountDTO(id, accountName, password, email);
+        return new AccountDTO(id, username, password, email);
     }
 
 }

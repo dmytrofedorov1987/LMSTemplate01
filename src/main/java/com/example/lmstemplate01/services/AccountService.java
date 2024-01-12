@@ -3,18 +3,16 @@ package com.example.lmstemplate01.services;
 import com.example.lmstemplate01.dto.AccountDTO;
 import com.example.lmstemplate01.model.Account;
 import com.example.lmstemplate01.repositoryJPA.AccountRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AccountService implements AccountServiceInterface {
     private final AccountRepository accountRepository;
-
-    public AccountService(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
-    }
 
     @Transactional
     @Override
@@ -29,7 +27,7 @@ public class AccountService implements AccountServiceInterface {
     @Override
     public void updateAccount(AccountDTO accountDTO, Long id) {
         Account account = getAccountFromOptional(id);
-        account.setAccountName(accountDTO.getAccountName());
+        account.setUsername(accountDTO.getUsername());
         account.setPassword(accountDTO.getPassword());
         account.setEmail(accountDTO.getEmail());
         accountRepository.save(account);
@@ -56,6 +54,9 @@ public class AccountService implements AccountServiceInterface {
 
     /**
      * My Method
+     *
+     * @param id
+     * @return Account
      */
     private Account getAccountFromOptional(Long id) {
         Optional<Account> accountOpt = accountRepository.findById(id);
