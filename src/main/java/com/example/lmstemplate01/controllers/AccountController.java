@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/account")
 @RequiredArgsConstructor
@@ -18,16 +20,16 @@ public class AccountController {
     private final AccountService accountService;
 
     @PostMapping
-    public ResponseEntity<ResultDTO> createAccount(@RequestBody AccountDTO accountDTO) {
+    public AccountDTO createAccount(@RequestBody AccountDTO accountDTO) {
         accountService.createAccount(accountDTO);
-        return new ResponseEntity<>(new SuccessResultDTO(), HttpStatus.OK);
+        return accountService.getAccountByUsername(accountDTO.getUsername());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ResultDTO> updateAccount(@PathVariable(value = "id") Long accountId,
-                                                   @RequestBody AccountDTO accountDTO) {
+    @PatchMapping("/{id}")
+    public AccountDTO updateAccount(@PathVariable(value = "id") Long accountId,
+                                    @RequestBody AccountDTO accountDTO) {
         accountService.updateAccount(accountDTO, accountId);
-        return new ResponseEntity<>(new SuccessResultDTO(), HttpStatus.OK);
+        return accountService.getAccount(accountId);
     }
 
     @DeleteMapping("/{id}")
@@ -41,6 +43,10 @@ public class AccountController {
         return accountService.getAccount(accountId);
     }
 
+    @GetMapping("all")
+    public List<AccountDTO> getAllAccounts() {// Need to retrieve PageRequest?
+        return accountService.getAllAccounts();
+    }
 
     /**
      * The method throws an exception if it receives uncorrected JSON or null.

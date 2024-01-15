@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,10 +19,15 @@ public class AccountService implements AccountServiceInterface {
     @Transactional
     @Override
     public void createAccount(AccountDTO accountDTO) {
-        if (accountRepository.existsByEmail(accountDTO.getEmail()))
-            return;
         Account account = Account.fromAccountDTO(accountDTO);
         accountRepository.save(account);
+    }
+
+    @Transactional
+    @Override
+    public AccountDTO getAccountByUsername(String username) {
+        Account account = accountRepository.findByUsername(username);
+        return account.toAccountDTO();
     }
 
     @Transactional
@@ -28,8 +35,8 @@ public class AccountService implements AccountServiceInterface {
     public void updateAccount(AccountDTO accountDTO, Long id) {
         Account account = getAccountFromOptional(id);
         account.setUsername(accountDTO.getUsername());
-        account.setPassword(accountDTO.getPassword());
         account.setEmail(accountDTO.getEmail());
+        account.setPassword(accountDTO.getPassword());
         accountRepository.save(account);
     }
 
@@ -44,6 +51,15 @@ public class AccountService implements AccountServiceInterface {
     public AccountDTO getAccount(Long id) {
         Account account = getAccountFromOptional(id);
         return account.toAccountDTO();
+    }
+
+    @Transactional
+    @Override
+    public List<AccountDTO> getAllAccounts() {// Need to retrieve PageRequest?
+        List<Account> users = accountRepository.findAll();
+        List<AccountDTO> usersDTO = new ArrayList<>();
+        users.forEach(a -> usersDTO.add(a.toAccountDTO()));
+        return usersDTO;
     }
 
     @Transactional

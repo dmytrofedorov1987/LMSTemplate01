@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +45,15 @@ public class RoleService implements RoleServiceInterface {
     public RoleDTO getRole(String id) {
         Role role = getRoleFromOptional(id);
         return role.toRoleDTO();
+    }
+
+    @Transactional
+    @Override
+    public List<RoleDTO> getAllRoles() {// Need to retrieve PageRequest?
+        List<Role> roles = roleRepository.findAll();
+        List<RoleDTO> rolesDTO = new ArrayList<>();
+        roles.forEach(a -> rolesDTO.add(a.toRoleDTO()));
+        return rolesDTO;
     }
 
     @Transactional

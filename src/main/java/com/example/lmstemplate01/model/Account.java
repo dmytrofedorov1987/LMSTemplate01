@@ -2,6 +2,7 @@ package com.example.lmstemplate01.model;
 
 import com.example.lmstemplate01.dto.AccountDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -13,11 +14,12 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
+    @Email
     private String email;
     @OneToMany(mappedBy = "account")
     private List<Role> roles = new ArrayList<>();

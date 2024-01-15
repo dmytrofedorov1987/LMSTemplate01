@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/v1/role")
@@ -19,16 +21,16 @@ public class RoleController {
     public final RoleService roleService;
 
     @PostMapping
-    public ResponseEntity<ResultDTO> createRole(@RequestBody RoleDTO roleDTO) {
+    public RoleDTO createRole(@RequestBody RoleDTO roleDTO) {
         roleService.createRole(roleDTO);
-        return new ResponseEntity<>(new SuccessResultDTO(), HttpStatus.OK);
+        return roleService.getRole(roleDTO.getId());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ResultDTO> updateRole(@PathVariable(value = "id") String roleId,
+    @PatchMapping("/{id}")
+    public RoleDTO updateRole(@PathVariable(value = "id") String roleId,
                                                 @RequestBody RoleDTO roleDTO) {
         roleService.updateRole(roleDTO, roleId);
-        return new ResponseEntity<>(new SuccessResultDTO(), HttpStatus.OK);
+        return roleService.getRole(roleId);
     }
 
     @DeleteMapping("/{id}")
@@ -40,6 +42,11 @@ public class RoleController {
     @GetMapping("/{id}")
     public RoleDTO retrieveRole(@PathVariable(value = "id") String roleId) {
         return roleService.getRole(roleId);
+    }
+
+    @GetMapping("/all")
+    public List<RoleDTO> getAllRoles() { // Need to retrieve PageRequest?
+        return roleService.getAllRoles();
     }
 
     /**
