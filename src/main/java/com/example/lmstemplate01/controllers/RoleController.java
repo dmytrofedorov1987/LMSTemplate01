@@ -20,7 +20,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoleController {
     public final RoleService roleService;
-    public final RoleRepository roleRepository;
 
     @PostMapping
     public ResponseEntity<ResultDTO> createRole(@RequestBody RoleDTO roleDTO) {
@@ -44,10 +43,6 @@ public class RoleController {
     @GetMapping("/{id}")
     public RoleDTO retrieveRole(@PathVariable(value = "id") String roleId) {
         return roleService.getRole(roleId);
-    }
-    @GetMapping("/getRoles")
-    public List<Role> getRoles(){
-        return roleRepository.findAll();
     }
 
     /**
