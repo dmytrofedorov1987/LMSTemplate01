@@ -33,4 +33,8 @@ public class Role {
     public static Role fromRoleDTO(RoleDTO roleDTO) {
         return Role.of(roleDTO.getId(), roleDTO.getLabel());
     }
+
+    public RoleDTO toRoleDTO() {
+        return new RoleDTO(id, label);
+    }
 }

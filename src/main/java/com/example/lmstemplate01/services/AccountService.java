@@ -53,7 +53,7 @@ public class AccountService implements AccountServiceInterface {
     }
 
     /**
-     * My Method
+     * Method searches and receive an Account by ID.
      *
      * @param id
      * @return Account
