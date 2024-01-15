@@ -4,8 +4,6 @@ import com.example.lmstemplate01.dto.ResultDTOPackege.BadResultDTO;
 import com.example.lmstemplate01.dto.ResultDTOPackege.ResultDTO;
 import com.example.lmstemplate01.dto.ResultDTOPackege.SuccessResultDTO;
 import com.example.lmstemplate01.dto.RoleDTO;
-import com.example.lmstemplate01.model.Role;
-import com.example.lmstemplate01.repositoryJPA.RoleRepository;
 import com.example.lmstemplate01.services.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -19,7 +19,6 @@ public class RoleService implements RoleServiceInterface {
         if (roleRepository.existsById(roleDTO.getId())) {
             return;
         }
-
         Role role = Role.fromRoleDTO(roleDTO);
         roleRepository.save(role);
     }
