@@ -4,6 +4,8 @@ import com.example.lmstemplate01.dto.ResultDTOPackege.BadResultDTO;
 import com.example.lmstemplate01.dto.ResultDTOPackege.ResultDTO;
 import com.example.lmstemplate01.dto.ResultDTOPackege.SuccessResultDTO;
 import com.example.lmstemplate01.dto.RoleDTO;
+import com.example.lmstemplate01.model.Role;
+import com.example.lmstemplate01.repositoryJPA.RoleRepository;
 import com.example.lmstemplate01.services.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,14 +13,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/role")
 @RequiredArgsConstructor
 public class RoleController {
     public final RoleService roleService;
+    public final RoleRepository roleRepository;
 
     @PostMapping
-    public ResponseEntity<ResultDTO> createRole(RoleDTO roleDTO) {
+    public ResponseEntity<ResultDTO> createRole(@RequestBody RoleDTO roleDTO) {
         roleService.createRole(roleDTO);
         return new ResponseEntity<>(new SuccessResultDTO(), HttpStatus.OK);
     }
@@ -39,6 +44,10 @@ public class RoleController {
     @GetMapping("/{id}")
     public RoleDTO retrieveRole(@PathVariable(value = "id") String roleId) {
         return roleService.getRole(roleId);
+    }
+    @GetMapping("/getRoles")
+    public List<Role> getRoles(){
+        return roleRepository.findAll();
     }
 
     /**

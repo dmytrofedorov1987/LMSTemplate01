@@ -19,6 +19,7 @@ public class SecurityConfiguration extends AbstractHttpConfigurer {
         http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest()
                         .permitAll())
                 .csrf(AbstractHttpConfigurer::disable);
+
         return http.build();
     }
     @Bean
