@@ -18,7 +18,7 @@ public class Account {
     private String username;
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true)//TODO create exception while occur unique
     @Email
     private String email;
     @OneToMany(mappedBy = "account")

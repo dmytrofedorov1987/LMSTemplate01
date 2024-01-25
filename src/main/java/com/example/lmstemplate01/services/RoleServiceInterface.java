@@ -6,9 +6,9 @@ import com.example.lmstemplate01.model.Role;
 import java.util.List;
 
 public interface RoleServiceInterface {
-    void createRole(RoleDTO roleDTO);
+    RoleDTO createRole(RoleDTO roleDTO);
 
-    void updateRole(RoleDTO roleDTO, String id);
+    RoleDTO updateRole(RoleDTO roleDTO, String id);
 
     void deleteRole(String id);
 

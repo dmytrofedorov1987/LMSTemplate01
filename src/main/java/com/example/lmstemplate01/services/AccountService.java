@@ -18,26 +18,19 @@ public class AccountService implements AccountServiceInterface {
 
     @Transactional
     @Override
-    public void createAccount(AccountDTO accountDTO) {
+    public AccountDTO createAccount(AccountDTO accountDTO) {
         Account account = Account.fromAccountDTO(accountDTO);
-        accountRepository.save(account);
+        return accountRepository.save(account).toAccountDTO();
     }
 
     @Transactional
     @Override
-    public AccountDTO getAccountByUsername(String username) {
-        Account account = accountRepository.findByUsername(username);
-        return account.toAccountDTO();
-    }
-
-    @Transactional
-    @Override
-    public void updateAccount(AccountDTO accountDTO, Long id) {
+    public AccountDTO updateAccount(AccountDTO accountDTO, Long id) {
         Account account = getAccountFromOptional(id);
         account.setUsername(accountDTO.getUsername());
         account.setEmail(accountDTO.getEmail());
         account.setPassword(accountDTO.getPassword());
-        accountRepository.save(account);
+        return accountRepository.save(account).toAccountDTO();
     }
 
     @Transactional

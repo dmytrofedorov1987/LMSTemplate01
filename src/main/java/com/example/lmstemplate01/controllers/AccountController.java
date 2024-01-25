@@ -21,18 +21,16 @@ public class AccountController {
 
     @PostMapping
     public AccountDTO createAccount(@RequestBody AccountDTO accountDTO) {
-        accountService.createAccount(accountDTO);
-        return accountService.getAccountByUsername(accountDTO.getUsername());
+        return accountService.createAccount(accountDTO);
     }
 
     @PatchMapping("/{id}")
     public AccountDTO updateAccount(@PathVariable(value = "id") Long accountId,
                                     @RequestBody AccountDTO accountDTO) {
-        accountService.updateAccount(accountDTO, accountId);
-        return accountService.getAccount(accountId);
+        return accountService.updateAccount(accountDTO, accountId);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}")//TODO what response needs?
     public ResponseEntity<ResultDTO> deleteAccount(@PathVariable(value = "id") Long accountId) {
         accountService.deleteAccount(accountId);
         return new ResponseEntity<>(new SuccessResultDTO(), HttpStatus.OK);
@@ -44,7 +42,7 @@ public class AccountController {
     }
 
     @GetMapping("all")
-    public List<AccountDTO> getAllAccounts() {// Need to retrieve PageRequest?
+    public List<AccountDTO> getAllAccounts() {// TODO Need to retrieve PageRequest?
         return accountService.getAllAccounts();
     }
 

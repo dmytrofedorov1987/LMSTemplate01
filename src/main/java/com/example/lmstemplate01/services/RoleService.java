@@ -18,20 +18,19 @@ public class RoleService implements RoleServiceInterface {
 
     @Transactional
     @Override
-    public void createRole(RoleDTO roleDTO) {
-        if (roleRepository.existsById(roleDTO.getId())) {
-            return;
+    public RoleDTO createRole(RoleDTO roleDTO) {
+        if (roleRepository.existsById(roleDTO.getId())) {//TODO what we response if role exist?
         }
         Role role = Role.fromRoleDTO(roleDTO);
-        roleRepository.save(role);
+        return roleRepository.save(role).toRoleDTO();
     }
 
     @Transactional
     @Override
-    public void updateRole(RoleDTO roleDTO, String id) {
+    public RoleDTO updateRole(RoleDTO roleDTO, String id) {
         Role role = getRoleFromOptional(id);
         role.setLabel(roleDTO.getLabel());
-        roleRepository.save(role);
+        return roleRepository.save(role).toRoleDTO();
     }
 
     @Transactional
