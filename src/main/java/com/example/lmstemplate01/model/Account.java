@@ -3,6 +3,7 @@ package com.example.lmstemplate01.model;
 import com.example.lmstemplate01.dto.AccountDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true)//TODO create exception while occur unique
     private String username;
     @Column(nullable = false)
     private String password;

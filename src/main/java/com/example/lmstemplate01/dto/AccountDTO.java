@@ -1,5 +1,6 @@
 package com.example.lmstemplate01.dto;
 
+import com.example.lmstemplate01.passwordValidator.ValidPassword;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -11,6 +12,7 @@ import lombok.Data;
 public class AccountDTO {
     private Long id;
     private String username;
+    @ValidPassword
     private String password;
     private String email;
 
