@@ -5,6 +5,7 @@ import com.example.lmstemplate01.dto.ResultDTOPackege.BadResultDTO;
 import com.example.lmstemplate01.dto.ResultDTOPackege.ResultDTO;
 import com.example.lmstemplate01.dto.ResultDTOPackege.SuccessResultDTO;
 import com.example.lmstemplate01.services.AccountService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +21,13 @@ public class AccountController {
     private final AccountService accountService;
 
     @PostMapping
-    public AccountDTO createAccount(@RequestBody AccountDTO accountDTO) {
+    public AccountDTO createAccount(@Valid @RequestBody AccountDTO accountDTO) {
         return accountService.createAccount(accountDTO);
     }
 
     @PatchMapping("/{id}")
     public AccountDTO updateAccount(@PathVariable(value = "id") Long accountId,
-                                    @RequestBody AccountDTO accountDTO) {
+                                    @Valid @RequestBody  AccountDTO accountDTO) {
         return accountService.updateAccount(accountDTO, accountId);
     }
 

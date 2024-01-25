@@ -1,6 +1,6 @@
 package com.example.lmstemplate01.dto;
 
-import com.example.lmstemplate01.passwordValidator.ValidPassword;
+import com.example.lmstemplate01.validators.ValidPassword;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

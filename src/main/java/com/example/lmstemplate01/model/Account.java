@@ -3,6 +3,7 @@ package com.example.lmstemplate01.model;
 import com.example.lmstemplate01.dto.AccountDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
@@ -15,12 +16,14 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true)//TODO create exception while occur unique
+    @NotBlank(message = "Username can not be empty and should be unique.")
+    @Column(unique = true)//TODO create exception while occur unique
     private String username;
-    @Column(nullable = false)
+    @NotBlank
     private String password;
-    @Column(nullable = false, unique = true)//TODO create exception while occur unique
-    @Email
+    @NotBlank
+    @Column(unique = true)//TODO create exception while occur unique
+    @Email(message = "Email should be valid and unique.")
     private String email;
     @OneToMany(mappedBy = "account")
     private List<Role> roles = new ArrayList<>();

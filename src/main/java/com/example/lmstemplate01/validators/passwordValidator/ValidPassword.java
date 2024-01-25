@@ -1,4 +1,5 @@
-package com.example.lmstemplate01.passwordValidator;
+package com.example.lmstemplate01.validators.passwordValidator;
+
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -15,6 +16,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({TYPE, FIELD, ANNOTATION_TYPE})
 @Retention(RUNTIME)
 public @interface ValidPassword {
+
     String message() default "Invalid Password";
 
     Class<?>[] groups() default {};
