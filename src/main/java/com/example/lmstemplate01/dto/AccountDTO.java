@@ -1,16 +1,11 @@
 package com.example.lmstemplate01.dto;
 
 
-import com.example.lmstemplate01.model.Account;
-import com.example.lmstemplate01.repositoryJPA.AccountRepository;
 import com.example.lmstemplate01.validators.passwordValidator.ValidPassword;
-import com.example.lmstemplate01.validators.uniqueValidators.FieldEquals;
+import com.example.lmstemplate01.validators.uniqueValidators.FieldUnique;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-
-import java.util.Optional;
 
 /**
  * DataTransferObject class for working with Accounts.
@@ -18,11 +13,11 @@ import java.util.Optional;
 @Data
 public class AccountDTO {
     private Long id;
-    @FieldEquals(field = "username")
+    @FieldUnique(field = "username", table = "Account")
     private String username;
     @ValidPassword
     private String password;
-    @FieldEquals(field = "email")
+    @FieldUnique(field = "email", table = "Account")
     private String email;
 
     @JsonCreator
@@ -40,4 +35,5 @@ public class AccountDTO {
         this.password = password;
         this.email = email;
     }
+
 }

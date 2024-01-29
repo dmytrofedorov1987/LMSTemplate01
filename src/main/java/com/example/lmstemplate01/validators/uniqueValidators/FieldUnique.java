@@ -1,7 +1,6 @@
 package com.example.lmstemplate01.validators.uniqueValidators;
 
 
-import com.example.lmstemplate01.model.Account;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -16,7 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = FieldEqualsValidator.class)
 @Target({TYPE, FIELD, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-public @interface FieldEquals {
+public @interface FieldUnique {
     String MESSAGE = "fields.notMatches";
 
     String message() default MESSAGE;
@@ -25,16 +24,14 @@ public @interface FieldEquals {
 
     Class<? extends Payload>[] payload() default {};
 
+    String field();
+
+    String table();
+
     @Documented
     @Target({TYPE, FIELD, ANNOTATION_TYPE})
     @Retention(RUNTIME)
     @interface List {
-        FieldEquals[] value();
+        FieldUnique[] value();
     }
-
-    String field();
-
-       //String equalsTo();
-
-
 }

@@ -1,11 +1,12 @@
 package com.example.lmstemplate01.model;
 
 import com.example.lmstemplate01.dto.AccountDTO;
-import com.example.lmstemplate01.validators.uniqueValidators.FieldEquals;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank(message = "Username can not be empty and should be unique.")
-   // @Column(unique = true)//TODO create exception while occur unique
+    //@Column(unique = true)//TODO create exception while occur unique
     private String username;
     @NotBlank
     private String password;
