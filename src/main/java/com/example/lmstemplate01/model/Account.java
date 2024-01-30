@@ -49,5 +49,4 @@ public class Account {
     public AccountDTO toAccountDTO() {
         return new AccountDTO(id, username, password, email);
     }
-
 }

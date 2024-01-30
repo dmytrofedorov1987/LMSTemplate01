@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -38,7 +39,7 @@ public class FieldUniqueValidator implements ConstraintValidator<FieldUnique, Ob
             if ((valueDTO != null) && valueDTO.equals(a)) {
                 return false;
             }
-            
+
             return true;
         };
 
@@ -54,17 +55,34 @@ public class FieldUniqueValidator implements ConstraintValidator<FieldUnique, Ob
 
     private List<Object> getValue(String fieldName) {
         List<Account> accountList = accountRepository.findAll();
-        return accountList.stream().map(a -> {
+        List<Object> objectList = new ArrayList<>();
+        for (Account acc : accountList) {
             Object value = null;
+            Class cl = acc.getClass();
             try {
-                Class cl = a.getClass();
                 Field field = cl.getDeclaredField(fieldName);
                 field.setAccessible(true);
-                value = field.get(cl);
+                 value = field.get(acc);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            objectList.add(value);
+        }
+        /*return accountList.stream().map(a -> {
+            Object value = null;
+            Class cl = a.getClass();
+            try {
+                Field field = cl.getDeclaredField(fieldName);
+                field.setAccessible(true);
+                value = field.get(a);
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 e.printStackTrace();
             }
             return value;
         }).collect(Collectors.toList());
+    }
+
+         */
+        return objectList;
     }
 }
