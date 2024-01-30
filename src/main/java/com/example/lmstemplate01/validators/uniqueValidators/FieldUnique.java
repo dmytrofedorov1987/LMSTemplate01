@@ -12,11 +12,11 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Documented
-@Constraint(validatedBy = FieldEqualsValidator.class)
+@Constraint(validatedBy = FieldUniqueValidator.class)
 @Target({TYPE, FIELD, ANNOTATION_TYPE})
 @Retention(RUNTIME)
 public @interface FieldUnique {
-    String MESSAGE = "fields.notMatches";
+    String MESSAGE = "fields is equal";
 
     String message() default MESSAGE;
 
@@ -34,4 +34,6 @@ public @interface FieldUnique {
     @interface List {
         FieldUnique[] value();
     }
+
+
 }
