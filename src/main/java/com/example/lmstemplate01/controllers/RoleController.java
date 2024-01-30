@@ -5,6 +5,7 @@ import com.example.lmstemplate01.dto.ResultDTOPackege.ResultDTO;
 import com.example.lmstemplate01.dto.ResultDTOPackege.SuccessResultDTO;
 import com.example.lmstemplate01.dto.RoleDTO;
 import com.example.lmstemplate01.services.RoleService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +22,13 @@ public class RoleController {
     public final RoleService roleService;
 
     @PostMapping
-    public RoleDTO createRole(@RequestBody RoleDTO roleDTO) {
+    public RoleDTO createRole(@Valid @RequestBody RoleDTO roleDTO) {
         roleService.createRole(roleDTO);
         return roleService.getRole(roleDTO.getId());
     }
 
     @PatchMapping("/{id}")
-    public RoleDTO updateRole(@PathVariable(value = "id") String roleId,
+    public RoleDTO updateRole(@Valid @PathVariable(value = "id") String roleId,
                                                 @RequestBody RoleDTO roleDTO) {
         roleService.updateRole(roleDTO, roleId);
         return roleService.getRole(roleId);

@@ -1,19 +1,23 @@
 package com.example.lmstemplate01.validators.uniqueValidators;
 
 import com.example.lmstemplate01.model.Account;
+import com.example.lmstemplate01.model.Role;
 import com.example.lmstemplate01.repositoryJPA.AccountRepository;
+import com.example.lmstemplate01.repositoryJPA.RoleRepository;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 public class FieldUniqueValidator implements ConstraintValidator<FieldUnique, Object> {
-    @Autowired
-    AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
+    private final RoleRepository roleRepository;
     private String field;
     private String table;
     private String message = FieldUnique.MESSAGE;
@@ -50,8 +54,8 @@ public class FieldUniqueValidator implements ConstraintValidator<FieldUnique, Ob
     }
 
     private List<Object> getValue(String fieldName) {
-        List<Account> accountList = accountRepository.findAll();
-        return accountList.stream().map(a -> {
+        List<Object> list = getObjectsFromTable(table);
+        return list.stream().map(a -> {
             Object value = null;
             Class cl = a.getClass();
             try {
@@ -63,6 +67,21 @@ public class FieldUniqueValidator implements ConstraintValidator<FieldUnique, Ob
             }
             return value;
         }).collect(Collectors.toList());
+    }
+
+    private List<Object> getObjectsFromTable(String table) {
+        List<Object> list = new ArrayList<>();
+        switch (table) {
+            case "Account":
+                List<Account> listAccount = accountRepository.findAll();
+                listAccount.forEach(a -> list.add((Object) a));
+                break;
+            case "Role":
+                List<Role> listRole = roleRepository.findAll();
+                listRole.forEach(a -> list.add((Object) a));
+                break;
+        }
+        return list;
     }
 }
 
