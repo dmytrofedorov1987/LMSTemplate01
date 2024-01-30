@@ -57,16 +57,17 @@ public class FieldUniqueValidator implements ConstraintValidator<FieldUnique, Ob
         List<Account> accountList = accountRepository.findAll();
         List<Object> objectList = new ArrayList<>();
         for (Account acc : accountList) {
-            Object value = null;
+            //Object value = null;
             Class cl = acc.getClass();
             try {
                 Field field = cl.getDeclaredField(fieldName);
                 field.setAccessible(true);
-                 value = field.get(acc);
+                Object value = field.get(acc);
+                objectList.add(value);
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 e.printStackTrace();
             }
-            objectList.add(value);
+
         }
         /*return accountList.stream().map(a -> {
             Object value = null;

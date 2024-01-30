@@ -35,5 +35,4 @@ public class AccountDTO {
         this.password = password;
         this.email = email;
     }
-
 }
