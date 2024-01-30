@@ -30,11 +30,10 @@ public class FieldUniqueValidator implements ConstraintValidator<FieldUnique, Ob
     public boolean isValid(Object valueDTO, ConstraintValidatorContext context) {
 
         List<Object> valueList = getValue(field);
-
         Predicate<Object> predicate = a -> {
             try {
-                final Object fieldObject = getProperty(valueDTO, field);
-                final Object equalsToObject = getProperty(a, field);
+                final Object fieldObject = getProperty(valueDTO, field, null);
+                final Object equalsToObject = getProperty(a, field, null);
 
                 if (fieldObject == null && equalsToObject == null) {
                     return true;
@@ -42,8 +41,7 @@ public class FieldUniqueValidator implements ConstraintValidator<FieldUnique, Ob
                 if ((fieldObject != null) && fieldObject.equals(equalsToObject)) {
                     return false;
                 }
-
-            } catch (final Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return true;
@@ -51,15 +49,15 @@ public class FieldUniqueValidator implements ConstraintValidator<FieldUnique, Ob
 
         if (valueList.stream().allMatch(predicate)) {
             return true;
-        } else {
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(this.message)
-                    .addNode(field).addConstraintViolation();
-            return false;
         }
+        context.disableDefaultConstraintViolation();
+        context.buildConstraintViolationWithTemplate(this.message)
+                .addNode(field).addConstraintViolation();
+        return false;
+
     }
 
-    private Object getProperty(Object value, String fieldName) {
+    private Object getProperty(Object value, String fieldName, Object defaultValue) {
         Class<?> cl = value.getClass();
         String methodName = "get" + Character.toUpperCase(fieldName.charAt(0))
                 + fieldName.substring(1);
@@ -69,7 +67,7 @@ public class FieldUniqueValidator implements ConstraintValidator<FieldUnique, Ob
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return defaultValue;
     }
 
     private List<Object> getValue(String fieldName) {
@@ -77,9 +75,10 @@ public class FieldUniqueValidator implements ConstraintValidator<FieldUnique, Ob
         return accountList.stream().map(a -> {
             Object value = null;
             try {
-                Field field1 = a.getClass().getDeclaredField(fieldName);
-                field1.setAccessible(true);
-                value = field1.get(a);
+                Class cl = a.getClass();
+                Field field = cl.getDeclaredField(fieldName);
+                field.setAccessible(true);
+                value = field.get(cl);
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 e.printStackTrace();
             }

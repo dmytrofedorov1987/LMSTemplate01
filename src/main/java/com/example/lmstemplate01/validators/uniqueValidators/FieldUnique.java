@@ -35,5 +35,4 @@ public @interface FieldUnique {
         FieldUnique[] value();
     }
 
-
 }
