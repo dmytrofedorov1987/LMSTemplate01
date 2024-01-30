@@ -27,14 +27,5 @@ public @interface FieldUnique {
     String field();
 
     String table();
-/*
-    @Documented
-    @Target({TYPE, FIELD, ANNOTATION_TYPE})
-    @Retention(RUNTIME)
-    @interface List {
-        FieldUnique[] valueDTO();
-    }
-
- */
 
 }

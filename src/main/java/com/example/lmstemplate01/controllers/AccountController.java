@@ -4,6 +4,8 @@ import com.example.lmstemplate01.dto.AccountDTO;
 import com.example.lmstemplate01.dto.ResultDTOPackege.BadResultDTO;
 import com.example.lmstemplate01.dto.ResultDTOPackege.ResultDTO;
 import com.example.lmstemplate01.dto.ResultDTOPackege.SuccessResultDTO;
+import com.example.lmstemplate01.model.Account;
+import com.example.lmstemplate01.repositoryJPA.AccountRepository;
 import com.example.lmstemplate01.services.AccountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,13 +14,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/account")
 @RequiredArgsConstructor
 public class AccountController {
     private final AccountService accountService;
+    private final AccountRepository accountRepository;
 
     @PostMapping
     public AccountDTO createAccount(@Valid @RequestBody AccountDTO accountDTO) {

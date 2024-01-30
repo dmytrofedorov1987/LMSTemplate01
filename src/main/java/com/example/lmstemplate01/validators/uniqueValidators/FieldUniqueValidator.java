@@ -7,8 +7,6 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -39,37 +37,22 @@ public class FieldUniqueValidator implements ConstraintValidator<FieldUnique, Ob
             if ((valueDTO != null) && valueDTO.equals(a)) {
                 return false;
             }
-
             return true;
         };
 
         if (valueList.stream().allMatch(predicate)) {
             return true;
         }
-        context.disableDefaultConstraintViolation();
         context.buildConstraintViolationWithTemplate(this.message)
-                .addNode(field).addConstraintViolation();
+                .addConstraintViolation();
+        context.disableDefaultConstraintViolation();
         return false;
 
     }
 
     private List<Object> getValue(String fieldName) {
         List<Account> accountList = accountRepository.findAll();
-        List<Object> objectList = new ArrayList<>();
-        for (Account acc : accountList) {
-            //Object value = null;
-            Class cl = acc.getClass();
-            try {
-                Field field = cl.getDeclaredField(fieldName);
-                field.setAccessible(true);
-                Object value = field.get(acc);
-                objectList.add(value);
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-
-        }
-        /*return accountList.stream().map(a -> {
+        return accountList.stream().map(a -> {
             Object value = null;
             Class cl = a.getClass();
             try {
@@ -82,8 +65,8 @@ public class FieldUniqueValidator implements ConstraintValidator<FieldUnique, Ob
             return value;
         }).collect(Collectors.toList());
     }
-
-         */
-        return objectList;
-    }
 }
+
+
+
+
