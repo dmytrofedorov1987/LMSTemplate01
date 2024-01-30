@@ -31,19 +31,14 @@ public class FieldUniqueValidator implements ConstraintValidator<FieldUnique, Ob
 
         List<Object> valueList = getValue(field);
         Predicate<Object> predicate = a -> {
-            try {
-                final Object fieldObject = getProperty(valueDTO, field, null);
-                final Object equalsToObject = getProperty(a, field, null);
 
-                if (fieldObject == null && equalsToObject == null) {
-                    return true;
-                }
-                if ((fieldObject != null) && fieldObject.equals(equalsToObject)) {
-                    return false;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (valueDTO == null && a == null) {
+                return true;
             }
+            if ((valueDTO != null) && valueDTO.equals(a)) {
+                return false;
+            }
+            
             return true;
         };
 
@@ -55,19 +50,6 @@ public class FieldUniqueValidator implements ConstraintValidator<FieldUnique, Ob
                 .addNode(field).addConstraintViolation();
         return false;
 
-    }
-
-    private Object getProperty(Object value, String fieldName, Object defaultValue) {
-        Class<?> cl = value.getClass();
-        String methodName = "get" + Character.toUpperCase(fieldName.charAt(0))
-                + fieldName.substring(1);
-        try {
-            Method method = cl.getDeclaredMethod(methodName, new Class[0]);
-            return method.invoke(value);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return defaultValue;
     }
 
     private List<Object> getValue(String fieldName) {
