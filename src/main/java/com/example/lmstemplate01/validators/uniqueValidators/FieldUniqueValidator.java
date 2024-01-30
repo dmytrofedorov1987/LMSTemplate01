@@ -30,7 +30,6 @@ public class FieldUniqueValidator implements ConstraintValidator<FieldUnique, Ob
 
         List<Object> valueList = getValue(field);
         Predicate<Object> predicate = a -> {
-
             if (valueDTO == null && a == null) {
                 return true;
             }
