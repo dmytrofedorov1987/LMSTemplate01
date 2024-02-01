@@ -64,7 +64,6 @@ public class RoleService implements RoleServiceInterface {
     /**
      * Method searches and receive a Role by ID.
      *
-     * @param id
      * @return Role
      */
     public Role getRoleFromOptional(String id) {

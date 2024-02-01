@@ -57,7 +57,7 @@ public class FieldUniqueValidator implements ConstraintValidator<FieldUnique, Ob
         List<Object> list = getObjectsFromTable(table);
         return list.stream().map(a -> {
             Object value = null;
-            Class cl = a.getClass();
+            Class<?> cl = a.getClass();
             try {
                 Field field = cl.getDeclaredField(fieldName);
                 field.setAccessible(true);
@@ -72,14 +72,14 @@ public class FieldUniqueValidator implements ConstraintValidator<FieldUnique, Ob
     private List<Object> getObjectsFromTable(String table) {
         List<Object> list = new ArrayList<>();
         switch (table) {
-            case "Account":
+            case "Account" -> {
                 List<Account> listAccount = accountRepository.findAll();
-                listAccount.forEach(a -> list.add((Object) a));
-                break;
-            case "Role":
+                list.addAll(listAccount);
+            }
+            case "Role" -> {
                 List<Role> listRole = roleRepository.findAll();
-                listRole.forEach(a -> list.add((Object) a));
-                break;
+                list.addAll(listRole);
+            }
         }
         return list;
     }

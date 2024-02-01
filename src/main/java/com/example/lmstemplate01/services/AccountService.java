@@ -30,6 +30,7 @@ public class AccountService implements AccountServiceInterface {
         account.setUsername(accountDTO.getUsername());
         account.setEmail(accountDTO.getEmail());
         account.setPassword(accountDTO.getPassword());
+
         return accountRepository.save(account).toAccountDTO();
     }
 
@@ -64,7 +65,6 @@ public class AccountService implements AccountServiceInterface {
     /**
      * Method searches and receive an Account by ID.
      *
-     * @param id
      * @return Account
      */
     private Account getAccountFromOptional(Long id) {
