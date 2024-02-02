@@ -19,14 +19,20 @@ public class AccountDTO {
     private String password;
     @FieldUnique(field = "email", table = "Account")
     private String email;
+    private String roles; //TODO
 
     @JsonCreator
     public AccountDTO(@JsonProperty String username,
                       @JsonProperty String password,
-                      @JsonProperty String email) {
+                      @JsonProperty String email,
+                      @JsonProperty String roles) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.roles = roles;
+    }
+
+    public AccountDTO() {
     }
 
     public AccountDTO(Long id, String username, String password, String email) {

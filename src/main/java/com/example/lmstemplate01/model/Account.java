@@ -45,4 +45,5 @@ public class Account {
     public AccountDTO toAccountDTO() {
         return new AccountDTO(id, username, password, email);
     }
+    // TODO Here i create a method for convert Json to string and backwards.
 }
