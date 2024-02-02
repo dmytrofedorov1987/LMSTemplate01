@@ -22,6 +22,7 @@ public class Role {
         this.label = label;
     }
 
+    /*
     public static Role of(String id, String label) {
         return new Role(id, label);
     }
@@ -33,4 +34,6 @@ public class Role {
     public RoleDTO toRoleDTO() {
         return new RoleDTO(id, label);
     }
+
+ */
 }

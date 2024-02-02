@@ -3,7 +3,9 @@ package com.example.lmstemplate01.services;
 import com.example.lmstemplate01.dto.AccountDTO;
 import com.example.lmstemplate01.model.Account;
 import com.example.lmstemplate01.repositoryJPA.AccountRepository;
+import com.example.lmstemplate01.repositoryJPA.RoleRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,12 +17,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AccountService implements AccountServiceInterface {
     private final AccountRepository accountRepository;
+    private final RoleRepository roleRepository;
+    private final ModelMapper modelMapper;
 
     @Transactional
     @Override
     public AccountDTO createAccount(AccountDTO accountDTO) {
-        Account account = Account.fromAccountDTO(accountDTO);
-        return accountRepository.save(account).toAccountDTO();
+        Account account = modelMapper.map(accountDTO, Account.class);
+        accountDTO.getRoles().stream().map(role -> {
+
+        });
+        accountRepository.save(account);
+        return modelMapper.map(account, AccountDTO.class);
     }
 
     @Transactional
@@ -29,9 +37,10 @@ public class AccountService implements AccountServiceInterface {
         Account account = getAccountFromOptional(id);
         account.setUsername(accountDTO.getUsername());
         account.setEmail(accountDTO.getEmail());
-        account.setPassword(accountDTO.getPassword());
+        account.setPassword(accountDTO.getPassword());//TODO
 
-        return accountRepository.save(account).toAccountDTO();
+        accountRepository.save(account);
+        return modelMapper.map(account, AccountDTO.class);
     }
 
     @Transactional
@@ -44,7 +53,7 @@ public class AccountService implements AccountServiceInterface {
     @Override
     public AccountDTO getAccount(Long id) {
         Account account = getAccountFromOptional(id);
-        return account.toAccountDTO();
+        return modelMapper.map(account, AccountDTO.class);
     }
 
     @Transactional
@@ -52,7 +61,7 @@ public class AccountService implements AccountServiceInterface {
     public List<AccountDTO> getAllAccounts() {// Need to retrieve PageRequest?
         List<Account> users = accountRepository.findAll();
         List<AccountDTO> usersDTO = new ArrayList<>();
-        users.forEach(a -> usersDTO.add(a.toAccountDTO()));
+        users.forEach(a -> usersDTO.add(modelMapper.map(a, AccountDTO.class)));
         return usersDTO;
     }
 

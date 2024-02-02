@@ -19,4 +19,5 @@ public class RoleDTO {
         this.id = id;
         this.label = label;
     }
+
 }
