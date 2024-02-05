@@ -21,7 +21,7 @@ public class RoleService implements RoleServiceInterface {
     @Transactional
     @Override
     public RoleDTO createRole(RoleDTO roleDTO) {
-        if (roleRepository.existsById(roleDTO.getId())) {//TODO what we response if role exist?
+        if (roleRepository.existsById(roleDTO.getId())) {
         }
         Role role = modelMapper.map(roleDTO, Role.class);
         roleRepository.save(role);
