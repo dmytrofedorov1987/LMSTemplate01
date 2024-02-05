@@ -1,17 +1,17 @@
 package com.example.lmstemplate01.model;
 
-import com.example.lmstemplate01.dto.AccountDTO;
-import com.example.lmstemplate01.dto.RoleDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,37 +23,22 @@ public class Account {
     @NotBlank
     @Email(message = "Email should be valid and unique.")
     private String email;
-    @OneToMany(mappedBy = "account")
-    private List<Role> roles = new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
     public Account() {
     }
 
-    public Account(String username, String password, String email, List<Role> roles) {
+    public Account(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.roles = roles;
     }
-    public void addRole(Role role){
+
+    public void addRole(Role role) {
         roles.add(role);
-        role.setAccount(this);
     }
-/*
-    public static Account of(String username, String password, String email, List<Role> roles) {
-        return new Account(username, password, email, roles);
-    }
-
-    public static Account fromAccountDTO(AccountDTO accountDTO) {
-        return Account.of(accountDTO.getUsername(), accountDTO.getPassword(), accountDTO.getEmail(), accountDTO.getRoles());
-    }
-
-    public AccountDTO toAccountDTO() {
-        return new AccountDTO(id, username, password, email, roles);
-    }
-    // TODO Here i create a method for convert Json to string and backwards.
-
- */
-
-
 }
