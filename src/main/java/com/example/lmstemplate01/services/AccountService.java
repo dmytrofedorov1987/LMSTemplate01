@@ -29,7 +29,7 @@ public class AccountService implements AccountServiceInterface {
     @Transactional
     @Override
     public AccountDTO updateAccount(AccountDTO accountDTO, Long id) {
-        Account account = getAccountFromOptional(id);
+        Account account = accountRepository.findById(id).orElseThrow();
         account.setUsername(accountDTO.getUsername());
         account.setEmail(accountDTO.getEmail());
         account.setPassword(accountDTO.getPassword());//TODO
@@ -47,7 +47,7 @@ public class AccountService implements AccountServiceInterface {
     @Transactional
     @Override
     public AccountDTO getAccount(Long id) {
-        Account account = getAccountFromOptional(id);
+        Account account = accountRepository.findById(id).orElseThrow();
         return mapperAccount.toAccountDTO(account);
     }
 
@@ -66,17 +66,4 @@ public class AccountService implements AccountServiceInterface {
         return accountRepository.count();
     }
 
-    /**
-     * Method searches and receive an Account by ID.
-     *
-     * @return Account
-     */
-    private Account getAccountFromOptional(Long id) {
-        Optional<Account> accountOpt = accountRepository.findById(id);
-        Account account = new Account();
-        if (accountOpt.isPresent()) {
-            account = accountOpt.get();
-        }
-        return account;
-    }
 }

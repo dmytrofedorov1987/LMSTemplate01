@@ -31,7 +31,7 @@ public class RoleService implements RoleServiceInterface {
     @Transactional
     @Override
     public RoleDTO updateRole(RoleDTO roleDTO, String id) {
-        Role role = getRoleFromOptional(id);
+        Role role = roleRepository.findById(id).orElseThrow();
         role.setLabel(roleDTO.getLabel());
         roleRepository.save(role);
         return modelMapper.map(role, RoleDTO.class);
@@ -46,7 +46,7 @@ public class RoleService implements RoleServiceInterface {
     @Transactional
     @Override
     public RoleDTO getRole(String id) {
-        Role role = getRoleFromOptional(id);
+        Role role = roleRepository.findById(id).orElseThrow();
         return modelMapper.map(role, RoleDTO.class);
     }
 
@@ -63,20 +63,6 @@ public class RoleService implements RoleServiceInterface {
     @Override
     public long count() {
         return roleRepository.count();
-    }
-
-    /**
-     * Method searches and receive a Role by ID.
-     *
-     * @return Role
-     */
-    public Role getRoleFromOptional(String id) {
-        Role role = new Role();
-        var roleOpt = roleRepository.findById(id);
-        if (roleOpt.isPresent()) {
-            role = roleOpt.get();
-        }
-        return role;
     }
 
 }
