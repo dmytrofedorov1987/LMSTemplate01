@@ -1,16 +1,12 @@
 package com.example.lmstemplate01.controllers;
 
 import com.example.lmstemplate01.dto.AccountDTO;
-import com.example.lmstemplate01.dto.ResultDTOPackege.BadResultDTO;
-import com.example.lmstemplate01.dto.ResultDTOPackege.ResultDTO;
-import com.example.lmstemplate01.dto.ResultDTOPackege.SuccessResultDTO;
 import com.example.lmstemplate01.repositoryJPA.AccountRepository;
 import com.example.lmstemplate01.services.AccountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,9 +30,9 @@ public class AccountController {
     }
 
     @DeleteMapping("/{id}")//TODO what response needs?
-    public ResponseEntity<ResultDTO> deleteAccount(@PathVariable(value = "id") Long accountId) {
+    public ResponseEntity<?> deleteAccount(@PathVariable(value = "id") Long accountId) {
         accountService.deleteAccount(accountId);
-        return new ResponseEntity<>(new SuccessResultDTO(), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -47,16 +43,6 @@ public class AccountController {
     @GetMapping("all")
     public List<AccountDTO> getAllAccounts() {// TODO Need to retrieve PageRequest?
         return accountService.getAllAccounts();
-    }
-
-    /**
-     * The method throws an exception if it receives uncorrected JSON or null.
-     *
-     * @return ResponseEntity
-     */
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ResultDTO> handleException() {
-        return new ResponseEntity<>(new BadResultDTO(), HttpStatus.BAD_REQUEST);
     }
 
 }

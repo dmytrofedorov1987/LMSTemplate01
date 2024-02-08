@@ -1,15 +1,14 @@
 package com.example.lmstemplate01.controllers;
 
-import com.example.lmstemplate01.dto.ResultDTOPackege.BadResultDTO;
-import com.example.lmstemplate01.dto.ResultDTOPackege.ResultDTO;
-import com.example.lmstemplate01.dto.ResultDTOPackege.SuccessResultDTO;
 import com.example.lmstemplate01.dto.RoleDTO;
 import com.example.lmstemplate01.services.RoleService;
+import com.example.lmstemplate01.utils.MLSTemplateError;
+import com.example.lmstemplate01.utils.MLSTemplateRuntimeException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,42 +21,59 @@ public class RoleController {
     public final RoleService roleService;
 
     @PostMapping
-    public RoleDTO createRole(@Valid @RequestBody RoleDTO roleDTO) {
-        roleService.createRole(roleDTO);
-        return roleService.getRole(roleDTO.getId());
+    public ResponseEntity<?> createRole(@Valid @RequestBody RoleDTO roleDTO) {
+        try {
+            roleService.createRole(roleDTO);
+            return ResponseEntity.ok(roleService.getRole(roleDTO.getId()));
+        } catch (MLSTemplateRuntimeException ex) {
+            return ResponseEntity.ok(
+                    new MLSTemplateError(HttpStatus.BAD_REQUEST.value(),
+                            "Incorrect data."));
+        }
     }
 
     @PatchMapping("/{id}")
-    public RoleDTO updateRole(@Valid @PathVariable(value = "id") String roleId,
-                                                @RequestBody RoleDTO roleDTO) {
-        roleService.updateRole(roleDTO, roleId);
-        return roleService.getRole(roleId);
+    public ResponseEntity<?> updateRole(@Valid @PathVariable(value = "id") String roleId,
+                                        @RequestBody RoleDTO roleDTO) {
+        try {
+            RoleDTO roleDto = roleService.updateRole(roleDTO, roleId);
+            return ResponseEntity.ok(roleDto);
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.ok(
+                    new MLSTemplateError(HttpStatus.NOT_FOUND.value(),
+                            "Role with id " + roleId + " is not found."));
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResultDTO> deleteRole(@PathVariable(value = "id") String roleId) {
-        roleService.deleteRole(roleId);
-        return new ResponseEntity<>(new SuccessResultDTO(), HttpStatus.OK);
+    public ResponseEntity<?> deleteRole(@PathVariable(value = "id") String roleId) {
+        try {
+            roleService.deleteRole(roleId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (MLSTemplateRuntimeException ex) {
+            return ResponseEntity.ok(
+                    new MLSTemplateError(HttpStatus.NOT_FOUND.value(),
+                            "Role with id " + roleId + " is not found."));
+        }
     }
 
     @GetMapping("/{id}")
-    public RoleDTO retrieveRole(@PathVariable(value = "id") String roleId) {
-        return roleService.getRole(roleId);
+    public ResponseEntity<?> retrieveRole(@PathVariable(value = "id") String roleId) {
+        try {
+            RoleDTO roleDTO = roleService.getRole(roleId);
+            return new ResponseEntity<>(roleDTO, HttpStatus.OK);
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.ok(
+                    new MLSTemplateError(HttpStatus.NOT_FOUND.value(),
+                            "Role with id " + roleId + " is not found."));
+        }
     }
+
 
     @GetMapping("/all")
-    public List<RoleDTO> getAllRoles() { // Need to retrieve PageRequest?
-        return roleService.getAllRoles();
-    }
-
-    /**
-     * The method throws an exception if it receives uncorrected JSON or null.
-     *
-     * @return ResponseEntity
-     */
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ResultDTO> handleException() {
-        return new ResponseEntity<>(new BadResultDTO(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<List<RoleDTO>> getAllRoles() {
+        List<RoleDTO> list = roleService.getAllRoles();
+        return ResponseEntity.ok(list);
     }
 
 }

@@ -3,6 +3,8 @@ package com.example.lmstemplate01.services;
 import com.example.lmstemplate01.dto.RoleDTO;
 import com.example.lmstemplate01.model.Role;
 import com.example.lmstemplate01.repositoryJPA.RoleRepository;
+import com.example.lmstemplate01.utils.MLSTemplateRuntimeException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ public class RoleService implements RoleServiceInterface {
     @Override
     public RoleDTO createRole(RoleDTO roleDTO) {
         if (roleRepository.existsById(roleDTO.getId())) {
+            throw new MLSTemplateRuntimeException("Role exists.");
         }
         Role role = modelMapper.map(roleDTO, Role.class);
         roleRepository.save(role);
@@ -31,7 +34,7 @@ public class RoleService implements RoleServiceInterface {
     @Transactional
     @Override
     public RoleDTO updateRole(RoleDTO roleDTO, String id) {
-        Role role = roleRepository.findById(id).orElseThrow();
+        Role role = roleRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Role with id " + id + " not found"));
         role.setLabel(roleDTO.getLabel());
         roleRepository.save(role);
         return modelMapper.map(role, RoleDTO.class);
@@ -40,26 +43,30 @@ public class RoleService implements RoleServiceInterface {
     @Transactional
     @Override
     public void deleteRole(String id) {
-        roleRepository.deleteById(id);
+        if (roleRepository.existsById(id)) {
+            roleRepository.deleteById(id);
+        } else {
+            throw new MLSTemplateRuntimeException("Role doesn't exist.");
+        }
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public RoleDTO getRole(String id) {
-        Role role = roleRepository.findById(id).orElseThrow();
+        Role role = roleRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Role with id " + id + " not found"));
         return modelMapper.map(role, RoleDTO.class);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
-    public List<RoleDTO> getAllRoles() {// Need to retrieve PageRequest?
+    public List<RoleDTO> getAllRoles() throws EntityNotFoundException {
         List<Role> roles = roleRepository.findAll();
         List<RoleDTO> rolesDTO = new ArrayList<>();
         roles.forEach(a -> rolesDTO.add(modelMapper.map(a, RoleDTO.class)));
         return rolesDTO;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public long count() {
         return roleRepository.count();

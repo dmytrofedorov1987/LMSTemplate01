@@ -44,14 +44,14 @@ public class AccountService implements AccountServiceInterface {
         accountRepository.deleteById(id);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public AccountDTO getAccount(Long id) {
         Account account = accountRepository.findById(id).orElseThrow();
         return mapperAccount.toAccountDTO(account);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<AccountDTO> getAllAccounts() {// Need to retrieve PageRequest?
         List<Account> users = accountRepository.findAll();
@@ -60,7 +60,7 @@ public class AccountService implements AccountServiceInterface {
         return usersDTO;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public long count() {
         return accountRepository.count();
