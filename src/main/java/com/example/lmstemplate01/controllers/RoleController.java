@@ -23,8 +23,8 @@ public class RoleController {
     @PostMapping
     public ResponseEntity<?> createRole(@Valid @RequestBody RoleDTO roleDTO) {
         try {
-            roleService.createRole(roleDTO);
-            return ResponseEntity.ok(roleService.getRole(roleDTO.getId()));
+            RoleDTO roleDto = roleService.createRole(roleDTO);
+            return ResponseEntity.ok(roleDto);
         } catch (MLSTemplateRuntimeException ex) {
             return ResponseEntity.ok(
                     new MLSTemplateError(HttpStatus.BAD_REQUEST.value(),
@@ -49,8 +49,9 @@ public class RoleController {
     public ResponseEntity<?> deleteRole(@PathVariable(value = "id") String roleId) {
         try {
             roleService.deleteRole(roleId);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (MLSTemplateRuntimeException ex) {
+            return ResponseEntity.ok(new MLSTemplateError(HttpStatus.OK.value(),
+                    "The role has been deleted."));
+        } catch (EntityNotFoundException ex) {
             return ResponseEntity.ok(
                     new MLSTemplateError(HttpStatus.NOT_FOUND.value(),
                             "Role with id " + roleId + " is not found."));
@@ -61,7 +62,7 @@ public class RoleController {
     public ResponseEntity<?> retrieveRole(@PathVariable(value = "id") String roleId) {
         try {
             RoleDTO roleDTO = roleService.getRole(roleId);
-            return new ResponseEntity<>(roleDTO, HttpStatus.OK);
+            return ResponseEntity.ok(roleDTO);
         } catch (EntityNotFoundException ex) {
             return ResponseEntity.ok(
                     new MLSTemplateError(HttpStatus.NOT_FOUND.value(),
@@ -71,9 +72,15 @@ public class RoleController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<List<RoleDTO>> getAllRoles() {
-        List<RoleDTO> list = roleService.getAllRoles();
-        return ResponseEntity.ok(list);
+    public ResponseEntity<?> getAllRoles() {
+        try {
+            List<RoleDTO> list = roleService.getAllRoles();
+            return ResponseEntity.ok(list);
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.ok(
+                    new MLSTemplateError(HttpStatus.NOT_FOUND.value(),
+                            "There are no roles. Create role."));
+        }
     }
 
 }

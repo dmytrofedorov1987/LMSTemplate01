@@ -34,7 +34,8 @@ public class RoleService implements RoleServiceInterface {
     @Transactional
     @Override
     public RoleDTO updateRole(RoleDTO roleDTO, String id) {
-        Role role = roleRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Role with id " + id + " not found"));
+        Role role = roleRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Role with id " + id + " not found"));
         role.setLabel(roleDTO.getLabel());
         roleRepository.save(role);
         return modelMapper.map(role, RoleDTO.class);
@@ -46,24 +47,29 @@ public class RoleService implements RoleServiceInterface {
         if (roleRepository.existsById(id)) {
             roleRepository.deleteById(id);
         } else {
-            throw new MLSTemplateRuntimeException("Role doesn't exist.");
+            throw new EntityNotFoundException("Role doesn't exist.");
         }
     }
 
     @Transactional(readOnly = true)
     @Override
     public RoleDTO getRole(String id) {
-        Role role = roleRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Role with id " + id + " not found"));
+        Role role = roleRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Role with id " + id + " not found"));
         return modelMapper.map(role, RoleDTO.class);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<RoleDTO> getAllRoles() throws EntityNotFoundException {
+    public List<RoleDTO> getAllRoles() {
         List<Role> roles = roleRepository.findAll();
-        List<RoleDTO> rolesDTO = new ArrayList<>();
-        roles.forEach(a -> rolesDTO.add(modelMapper.map(a, RoleDTO.class)));
-        return rolesDTO;
+        if (!roles.isEmpty()) {
+            List<RoleDTO> rolesDTO = new ArrayList<>();
+            roles.forEach(a -> rolesDTO.add(modelMapper.map(a, RoleDTO.class)));
+            return rolesDTO;
+        } else {
+            throw new EntityNotFoundException();
+        }
     }
 
     @Transactional(readOnly = true)
