@@ -4,6 +4,7 @@ import com.example.lmstemplate01.configurations.MapperAccount;
 import com.example.lmstemplate01.dto.AccountDTO;
 import com.example.lmstemplate01.model.Account;
 import com.example.lmstemplate01.repositoryJPA.AccountRepository;
+import com.example.lmstemplate01.repositoryJPA.RoleRepository;
 import com.example.lmstemplate01.utils.MLSTemplateRuntimeException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountService implements AccountServiceInterface {
     private final AccountRepository accountRepository;
+    private final RoleRepository roleRepository;
     private final MapperAccount mapperAccount;
 
     @Transactional
@@ -24,22 +26,39 @@ public class AccountService implements AccountServiceInterface {
     public AccountDTO createAccount(AccountDTO accountDTO) {
         if (accountRepository.existsByUsername(accountDTO.getUsername())) {
             throw new MLSTemplateRuntimeException("User with name " + accountDTO.getUsername() + " exists.");
-        } else {
-            Account account = mapperAccount.toAccount(accountDTO);
-            accountRepository.save(account);
-            return mapperAccount.toAccountDTO(account);
         }
+        Account account = new Account();
+        if (!(accountDTO.getRoles().isEmpty())) {
+            Account finalAccount = account;
+            accountDTO.getRoles().forEach(roleId ->
+                    finalAccount.addRole(roleRepository.findById(roleId)
+                            .orElseThrow(() -> new EntityNotFoundException("Role with id " + roleId + " not found"))));
+        }
+        account = mapperAccount.toAccount(accountDTO);
+        accountRepository.save(account);
+        return mapperAccount.toAccountDTO(account);
     }
+
 
     @Transactional
     @Override
     public AccountDTO updateAccount(AccountDTO accountDTO, Long id) {
         Account account = accountRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Account with id " + id + " not found"));
-        account.setUsername(accountDTO.getUsername());
-        account.setEmail(accountDTO.getEmail());
-        account.setPassword(accountDTO.getPassword());//TODO
-
+        if (!(accountDTO.getUsername() == null)) {
+            account.setUsername(accountDTO.getUsername());
+        }
+        if (!(accountDTO.getEmail() == null)) {
+            account.setEmail(accountDTO.getEmail());
+        }
+        if (!(accountDTO.getPassword() == null)) {
+            account.setPassword(accountDTO.getPassword());
+        }
+        if (!(accountDTO.getRoles().isEmpty())) {
+            accountDTO.getRoles().forEach(roleId ->
+                    account.addRole(roleRepository.findById(roleId)
+                            .orElseThrow(() -> new EntityNotFoundException("Role with id " + roleId + " not found"))));
+        }
         accountRepository.save(account);
         return mapperAccount.toAccountDTO(account);
     }

@@ -4,6 +4,7 @@ import com.example.lmstemplate01.dto.AccountDTO;
 import com.example.lmstemplate01.model.Account;
 import com.example.lmstemplate01.model.Role;
 import com.example.lmstemplate01.repositoryJPA.RoleRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

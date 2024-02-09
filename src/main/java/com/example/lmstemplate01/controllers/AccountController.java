@@ -22,19 +22,30 @@ public class AccountController {
     @PostMapping
     public ResponseEntity<?> createAccount(@Valid @RequestBody AccountDTO accountDTO) {
         try {
-            AccountDTO accountDTto = accountService.createAccount(accountDTO);
-            return ResponseEntity.ok(accountDTto);
+            AccountDTO accountDto = accountService.createAccount(accountDTO);
+            return ResponseEntity.ok(accountDto);
         } catch (MLSTemplateRuntimeException ex) {
             return ResponseEntity.ok(
                     new MLSTemplateError(HttpStatus.BAD_REQUEST.value(),
-                            "Incorrect data."));
+                            "User with name " + accountDTO.getUsername() + " exists."));
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.ok(
+                    new MLSTemplateError(HttpStatus.NOT_FOUND.value(),
+                            "Role is not found"));
         }
     }
 
     @PatchMapping("/{id}")
-    public AccountDTO updateAccount(@PathVariable(value = "id") Long accountId,
-                                    @Valid @RequestBody AccountDTO accountDTO) {//TODO
-        return accountService.updateAccount(accountDTO, accountId);
+    public ResponseEntity<?> updateAccount(@PathVariable(value = "id") Long accountId,
+                                           @Valid @RequestBody AccountDTO accountDTO) {
+        try {
+            AccountDTO accountDto = accountService.updateAccount(accountDTO, accountId);
+            return ResponseEntity.ok(accountDto);
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.ok(
+                    new MLSTemplateError(HttpStatus.NOT_FOUND.value(),
+                            "Account or Role are not found."));
+        }
     }
 
     @DeleteMapping("/{id}")
