@@ -1,9 +1,9 @@
-package com.example.lmstemplate01.services;
+package com.example.lmstemplate01.services.userService;
 
-import com.example.lmstemplate01.dto.RoleDTO;
-import com.example.lmstemplate01.model.Role;
-import com.example.lmstemplate01.repositoryJPA.RoleRepository;
-import com.example.lmstemplate01.utils.MLSTemplateRuntimeException;
+import com.example.lmstemplate01.web.dto.user.RoleDTO;
+import com.example.lmstemplate01.model.user.Role;
+import com.example.lmstemplate01.repositoryJPA.userRepository.RoleRepository;
+import com.example.lmstemplate01.model.exceptions.MLSTemplateRuntimeException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

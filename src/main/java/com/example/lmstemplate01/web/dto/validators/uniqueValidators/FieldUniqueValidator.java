@@ -1,9 +1,9 @@
-package com.example.lmstemplate01.validators.uniqueValidators;
+package com.example.lmstemplate01.web.dto.validators.uniqueValidators;
 
-import com.example.lmstemplate01.model.Account;
-import com.example.lmstemplate01.model.Role;
-import com.example.lmstemplate01.repositoryJPA.AccountRepository;
-import com.example.lmstemplate01.repositoryJPA.RoleRepository;
+import com.example.lmstemplate01.model.user.Account;
+import com.example.lmstemplate01.model.user.Role;
+import com.example.lmstemplate01.repositoryJPA.userRepository.AccountRepository;
+import com.example.lmstemplate01.repositoryJPA.userRepository.RoleRepository;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;

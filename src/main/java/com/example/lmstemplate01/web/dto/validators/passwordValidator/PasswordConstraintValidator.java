@@ -1,4 +1,4 @@
-package com.example.lmstemplate01.validators.passwordValidator;
+package com.example.lmstemplate01.web.dto.validators.passwordValidator;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

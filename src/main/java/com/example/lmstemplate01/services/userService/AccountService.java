@@ -1,11 +1,11 @@
-package com.example.lmstemplate01.services;
+package com.example.lmstemplate01.services.userService;
 
-import com.example.lmstemplate01.configurations.MapperAccount;
-import com.example.lmstemplate01.dto.AccountDTO;
-import com.example.lmstemplate01.model.Account;
-import com.example.lmstemplate01.repositoryJPA.AccountRepository;
-import com.example.lmstemplate01.repositoryJPA.RoleRepository;
-import com.example.lmstemplate01.utils.MLSTemplateRuntimeException;
+import com.example.lmstemplate01.web.mappers.MapperAccount;
+import com.example.lmstemplate01.web.dto.user.AccountDTO;
+import com.example.lmstemplate01.model.user.Account;
+import com.example.lmstemplate01.repositoryJPA.userRepository.AccountRepository;
+import com.example.lmstemplate01.repositoryJPA.userRepository.RoleRepository;
+import com.example.lmstemplate01.model.exceptions.MLSTemplateRuntimeException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

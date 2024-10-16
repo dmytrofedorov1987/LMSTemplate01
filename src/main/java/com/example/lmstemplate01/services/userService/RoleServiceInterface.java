@@ -1,7 +1,6 @@
-package com.example.lmstemplate01.services;
+package com.example.lmstemplate01.services.userService;
 
-import com.example.lmstemplate01.dto.RoleDTO;
-import com.example.lmstemplate01.model.Role;
+import com.example.lmstemplate01.web.dto.user.RoleDTO;
 
 import java.util.List;
 

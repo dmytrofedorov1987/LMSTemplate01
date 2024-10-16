@@ -1,4 +1,4 @@
-package com.example.lmstemplate01.utils;
+package com.example.lmstemplate01.model.exceptions;
 
 import lombok.Getter;
 import lombok.Setter;

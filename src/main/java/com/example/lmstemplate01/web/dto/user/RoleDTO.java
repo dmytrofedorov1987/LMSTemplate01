@@ -1,6 +1,6 @@
-package com.example.lmstemplate01.dto;
+package com.example.lmstemplate01.web.dto.user;
 
-import com.example.lmstemplate01.validators.uniqueValidators.FieldUnique;
+import com.example.lmstemplate01.web.dto.validators.uniqueValidators.FieldUnique;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

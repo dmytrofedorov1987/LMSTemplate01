@@ -1,7 +1,7 @@
-package com.example.lmstemplate01.services;
+package com.example.lmstemplate01.services.userService;
 
 
-import com.example.lmstemplate01.dto.AccountDTO;
+import com.example.lmstemplate01.web.dto.user.AccountDTO;
 
 import java.util.List;
 

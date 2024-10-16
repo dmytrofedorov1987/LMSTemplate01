@@ -1,9 +1,9 @@
-package com.example.lmstemplate01.controllers;
+package com.example.lmstemplate01.web.controllers;
 
-import com.example.lmstemplate01.dto.AccountDTO;
-import com.example.lmstemplate01.services.AccountService;
-import com.example.lmstemplate01.utils.MLSTemplateError;
-import com.example.lmstemplate01.utils.MLSTemplateRuntimeException;
+import com.example.lmstemplate01.web.dto.user.AccountDTO;
+import com.example.lmstemplate01.services.userService.AccountService;
+import com.example.lmstemplate01.model.exceptions.MLSTemplateError;
+import com.example.lmstemplate01.model.exceptions.MLSTemplateRuntimeException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

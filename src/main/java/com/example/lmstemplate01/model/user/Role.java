@@ -1,4 +1,4 @@
-package com.example.lmstemplate01.model;
+package com.example.lmstemplate01.model.user;
 
 import jakarta.persistence.*;
 import lombok.Getter;

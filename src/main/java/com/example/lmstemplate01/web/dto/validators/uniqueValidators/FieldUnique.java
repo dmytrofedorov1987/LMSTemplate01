@@ -1,4 +1,4 @@
-package com.example.lmstemplate01.validators.uniqueValidators;
+package com.example.lmstemplate01.web.dto.validators.uniqueValidators;
 
 
 import jakarta.validation.Constraint;
