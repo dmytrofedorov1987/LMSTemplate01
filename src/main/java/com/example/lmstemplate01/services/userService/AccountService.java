@@ -6,6 +6,7 @@ import com.example.lmstemplate01.model.user.Account;
 import com.example.lmstemplate01.repositoryJPA.userRepository.AccountRepository;
 import com.example.lmstemplate01.repositoryJPA.userRepository.RoleRepository;
 import com.example.lmstemplate01.model.exceptions.MLSTemplateRuntimeException;
+import com.example.lmstemplate01.web.mappers.UserMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ import java.util.List;
 public class AccountService implements AccountServiceInterface {
     private final AccountRepository accountRepository;
     private final RoleRepository roleRepository;
-    private final MapperAccount mapperAccount;
+    private final UserMapper userMapper;
 
     @Transactional
     @Override
@@ -28,15 +29,15 @@ public class AccountService implements AccountServiceInterface {
             throw new MLSTemplateRuntimeException("User with name " + accountDTO.getUsername() + " exists.");
         }
         Account account = new Account();
-        if (!(accountDTO.getRoles().isEmpty())) {
+        if (!(accountDTO.getRolesId().isEmpty())) {
             Account finalAccount = account;
-            accountDTO.getRoles().forEach(roleId ->
+            accountDTO.getRolesId().forEach(roleId ->
                     finalAccount.addRole(roleRepository.findById(roleId)
                             .orElseThrow(() -> new EntityNotFoundException("Role with id " + roleId + " not found"))));
         }
-        account = mapperAccount.toAccount(accountDTO);
+        account = userMapper.toEntity(accountDTO);
         accountRepository.save(account);
-        return mapperAccount.toAccountDTO(account);
+        return userMapper.toDto(account);
     }
 
 

@@ -24,27 +24,28 @@ public class AccountDTO {
     private String password;
     @FieldUnique(field = "email", table = "Account")
     private String email;
-    private List<String> roles = new ArrayList<>();
+
+    private List<String> rolesId = new ArrayList<>();
 
     @JsonCreator
     public AccountDTO(@JsonProperty String username,
                       @JsonProperty String password,
                       @JsonProperty String email,
-                      @JsonProperty List<String> roles) {
+                      @JsonProperty List<String> rolesId) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.roles = roles;
+        this.rolesId = rolesId;
     }
 
     public AccountDTO() {
     }
 
-    public AccountDTO(Long id, String username, String password, String email, List<String> roles) {
+    public AccountDTO(Long id, String username, String password, String email, List<String> rolesId) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
-        this.roles = roles;
+        this.rolesId = rolesId;
     }
 }

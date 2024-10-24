@@ -4,6 +4,8 @@ import com.example.lmstemplate01.web.dto.user.RoleDTO;
 import com.example.lmstemplate01.model.user.Role;
 import com.example.lmstemplate01.repositoryJPA.userRepository.RoleRepository;
 import com.example.lmstemplate01.model.exceptions.MLSTemplateRuntimeException;
+import com.example.lmstemplate01.web.mappers.RoleMapper;
+import com.example.lmstemplate01.web.mappers.UpdateMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -18,7 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoleService implements RoleServiceInterface {
     private final RoleRepository roleRepository;
-    private final ModelMapper modelMapper;
+    private final RoleMapper roleMapper;
+    private final UpdateMapper updateMapper;
 
     @Transactional
     @Override
