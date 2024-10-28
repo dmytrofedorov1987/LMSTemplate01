@@ -1,17 +1,18 @@
 package com.example.lmstemplate01.web.controllers;
 
-import com.example.lmstemplate01.web.dto.user.RoleDTO;
-import com.example.lmstemplate01.services.userService.RoleService;
 import com.example.lmstemplate01.model.exceptions.MLSTemplateError;
 import com.example.lmstemplate01.model.exceptions.MLSTemplateRuntimeException;
+import com.example.lmstemplate01.services.userService.RoleService;
+import com.example.lmstemplate01.web.dto.user.RoleDTO;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -19,6 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoleController {
     public final RoleService roleService;
+    private final static Integer CURRENT_PAGE_DEFAULT = 0;
+    private final static Integer PAGE_SIZE_DEFAULT = 10;
 
     @PostMapping
     public ResponseEntity<?> createRole(@Valid @RequestBody RoleDTO roleDTO) {
@@ -72,15 +75,14 @@ public class RoleController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllRoles() {
-        try {
-            List<RoleDTO> list = roleService.getAllRoles();
-            return ResponseEntity.ok(list);
-        } catch (EntityNotFoundException ex) {
-            return ResponseEntity.ok(
-                    new MLSTemplateError(HttpStatus.NOT_FOUND.value(),
-                            "There are no roles. Create role."));
+    public ResponseEntity<?> getAllRoles(@RequestParam(name = "page_number") Optional<Integer> page) {
+        int currentPage = page.orElse(CURRENT_PAGE_DEFAULT);
+        if (currentPage < roleService.totalPages(PAGE_SIZE_DEFAULT)) {
+            return ResponseEntity.ok(roleService.getAllRoles(PageRequest.of(currentPage, PAGE_SIZE_DEFAULT)));
         }
+            return ResponseEntity.ok(
+                    new MLSTemplateError(HttpStatus.BAD_REQUEST.value(),
+                            "Page Number is not correct."));
     }
 
 }

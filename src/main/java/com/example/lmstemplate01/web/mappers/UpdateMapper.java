@@ -9,7 +9,7 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 /**
- * Allow Entity to be updated partially and completely.
+ * MapStruct Framework. Allow Entity to be updated partially and completely.
  */
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface UpdateMapper {

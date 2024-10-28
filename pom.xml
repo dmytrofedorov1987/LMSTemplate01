@@ -19,6 +19,7 @@
         <passay.version>1.6.4</passay.version>
         <mapstruct.version>1.6.2</mapstruct.version>
         <mapstructprocessor.version>1.6.2</mapstructprocessor.version>
+        <junit-jupiter.versio>5.11.3</junit-jupiter.versio>
     </properties>
     <dependencies>
         <dependency>
@@ -76,6 +77,12 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-processor</artifactId>
             <version>${mapstructprocessor.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

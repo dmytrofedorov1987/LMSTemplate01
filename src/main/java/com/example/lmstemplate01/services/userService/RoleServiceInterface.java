@@ -1,6 +1,7 @@
 package com.example.lmstemplate01.services.userService;
 
 import com.example.lmstemplate01.web.dto.user.RoleDTO;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface RoleServiceInterface {
 
     RoleDTO getRole(String id);
 
-    List<RoleDTO> getAllRoles();// Need to retrieve PageRequest?
+    List<RoleDTO> getAllRoles(Pageable pageable);// Need to retrieve PageRequest?
 
     long count();
 
