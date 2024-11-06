@@ -1,4 +1,4 @@
-package com.example.lmstemplate01.web.controllers;
+/*package com.example.lmstemplate01.web.controllers;
 
 import com.example.lmstemplate01.web.dto.user.AccountDTO;
 import com.example.lmstemplate01.services.userService.AccountService;
@@ -86,3 +86,5 @@ public class AccountController {
     }
 
 }
+
+ */
