@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RoleRepository extends JpaRepository<Role, String> {
+
     boolean existsById(String id);
 
     Page<Role> findAll(Pageable pageable);
