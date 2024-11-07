@@ -1,6 +1,7 @@
 package com.example.lmstemplate01.services;
 
 
+import com.example.lmstemplate01.model.exceptions.MLSTemplateRuntimeException;
 import com.example.lmstemplate01.model.user.Role;
 import com.example.lmstemplate01.repositoryJPA.userRepository.RoleRepository;
 import com.example.lmstemplate01.services.userService.RoleService;
@@ -8,6 +9,7 @@ import com.example.lmstemplate01.web.dto.user.RoleDTO;
 import com.example.lmstemplate01.web.mappers.RoleMapper;
 import com.example.lmstemplate01.web.mappers.UpdateMapper;
 import jakarta.persistence.EntityNotFoundException;
+import org.glassfish.jaxb.core.v2.TODO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,6 +45,9 @@ class RoleServiceTest {
         roleDTO = new RoleDTO("admin", "ADMIN");
     }
 
+    /**
+     * Check create method.
+     */
     @Test
     void roleExistAfterCreateRole_returnRoleDTO() {
         RoleDTO expectedRoleDTO = new RoleDTO("admin", "ADMIN");
@@ -51,6 +56,22 @@ class RoleServiceTest {
         assertEquals(expectedRoleDTO, createdRoleDTO);
     }
 
+    /**
+     * Check create method.
+     */
+    @Test
+    void roleExistBeforeCreateRole_returnException() {
+        MLSTemplateRuntimeException exception = assertThrows(MLSTemplateRuntimeException.class,
+                () -> {
+                    when(roleRepository.existsById(role.getId())).thenReturn(true);
+                    roleService.createRole(roleDTO);
+                });
+        assertEquals("Role exists.", exception.getMessage());
+    }
+
+    /**
+     * Check update method.
+     */
     @Test
     void roleExistAfterUpdateRole_returnUpdatedRoleDTO() {
         RoleDTO newRoleDTO = new RoleDTO("user", "CUSTOMER");
@@ -63,7 +84,17 @@ class RoleServiceTest {
         RoleDTO actualRoleDTO = roleService.updateRole(newRoleDTO, role.getId());
         assertEquals(expectedRoleDTO, actualRoleDTO);
     }
+    /**
+     * Check update method.
+     */
+    @Test
+    void roleExistBeforeUpdateRole_returnException() {
+        //TODO
+    }
 
+    /**
+     * Check delete method.
+     */
     @Test
     void roleIsNullAfterDeleteRole_returnVoid() {
         when(roleRepository.existsById("admin")).thenReturn(true);
@@ -71,6 +102,9 @@ class RoleServiceTest {
         verify(roleRepository, times(1)).deleteById(role.getId());
     }
 
+    /**
+     * Check delete method.
+     */
     @Test
     void roleIsNullBeforeDeleteRole_returnException() {
         EntityNotFoundException exception = assertThrows(
@@ -78,8 +112,7 @@ class RoleServiceTest {
                 () -> {
                     when(roleRepository.existsById("admin")).thenReturn(false);
                     roleService.deleteRole(role.getId());
-                }
-        );
+                });
         assertEquals("Role doesn't exist.", exception.getMessage());
     }
 }
