@@ -9,7 +9,6 @@ import com.example.lmstemplate01.web.dto.user.RoleDTO;
 import com.example.lmstemplate01.web.mappers.RoleMapper;
 import com.example.lmstemplate01.web.mappers.UpdateMapper;
 import jakarta.persistence.EntityNotFoundException;
-import org.glassfish.jaxb.core.v2.TODO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,8 +40,8 @@ class RoleServiceTest {
 
     @BeforeEach
     void setUpRoleDTO() {
-        role = new Role("admin", "ADMIN");
-        roleDTO = new RoleDTO("admin", "ADMIN");
+        role = new Role("admin", "ADMIN1");
+        roleDTO = new RoleDTO("admin", "ADMIN1");
     }
 
     /**
@@ -50,7 +49,7 @@ class RoleServiceTest {
      */
     @Test
     void roleExistAfterCreateRole_returnRoleDTO() {
-        RoleDTO expectedRoleDTO = new RoleDTO("admin", "ADMIN");
+        RoleDTO expectedRoleDTO = new RoleDTO("admin", "ADMIN1");
         when(roleService.createRole(roleDTO)).thenReturn(expectedRoleDTO);
         RoleDTO createdRoleDTO = roleService.createRole(roleDTO);
         assertEquals(expectedRoleDTO, createdRoleDTO);
@@ -74,23 +73,51 @@ class RoleServiceTest {
      */
     @Test
     void roleExistAfterUpdateRole_returnUpdatedRoleDTO() {
-        RoleDTO newRoleDTO = new RoleDTO("user", "CUSTOMER");
-        RoleDTO expectedRoleDTO = new RoleDTO("user", "CUSTOMER");
+        RoleDTO updateRoleDTO = new RoleDTO("user", "CUSTOMER");//TODO
+        RoleDTO expectedUpdateRoleDTO = new RoleDTO("user", "CUSTOMER");//TODO
         Optional<Role> optionalRole = Optional.of(role);
 
         when(roleRepository.findById("admin")).thenReturn(optionalRole);
 
-        when(roleService.updateRole(newRoleDTO, role.getId())).thenReturn(expectedRoleDTO);
-        RoleDTO actualRoleDTO = roleService.updateRole(newRoleDTO, role.getId());
-        assertEquals(expectedRoleDTO, actualRoleDTO);
+        when(roleService.updateRole(updateRoleDTO, role.getId())).thenReturn(expectedUpdateRoleDTO);//TODO
+        RoleDTO actualRoleDTO = roleService.updateRole(updateRoleDTO, role.getId());//TODO
+        assertEquals(expectedUpdateRoleDTO, actualRoleDTO);
     }
     /**
      * Check update method.
      */
     @Test
-    void roleExistBeforeUpdateRole_returnException() {
-        //TODO
+    void roleNotExistBeforeUpdateRole_returnException() {
+        EntityNotFoundException exception = assertThrows(
+                EntityNotFoundException.class,
+                () -> {
+                    when(roleRepository.findById("admin")).thenReturn(Optional.empty());
+                    roleService.updateRole(roleDTO, "admin");
+                });
+        assertEquals("Role with id admin not found", exception.getMessage());
     }
+
+    /**
+     * Check update method.
+     */
+    /**@Test //TODO
+    void roleNotExistAfterUpdateRole_returnException() {
+    RoleDTO updateRoleDTO = new RoleDTO("user", "CUSTOMER");
+    RoleDTO expectedUpdateRoleDTO = new RoleDTO("user", "CUSTOMER");
+    Optional<Role> optionalRole = Optional.of(role);
+
+    when(roleRepository.findById("admin")).thenReturn(optionalRole);
+
+
+        EntityNotFoundException exception = assertThrows(
+                EntityNotFoundException.class,
+                () -> {
+                    when(roleRepository.findById("admin")).thenReturn(Optional.empty());
+                    roleService.updateRole(roleDTO, "admin");
+                });
+        assertEquals("Role with id admin after update not found", exception.getMessage());
+    }
+    **/
 
     /**
      * Check delete method.
