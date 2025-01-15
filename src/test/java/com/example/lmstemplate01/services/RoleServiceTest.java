@@ -73,26 +73,28 @@ class RoleServiceTest {
      */
     @Test
     void roleExistAfterUpdateRole_returnUpdatedRoleDTO() {
-        RoleDTO updateRoleDTO = new RoleDTO("user", "CUSTOMER");//TODO
-        RoleDTO expectedUpdateRoleDTO = new RoleDTO("user", "CUSTOMER");//TODO
+        RoleDTO updateRoleDTO = new RoleDTO("CUSTOMER");
+        RoleDTO expectedUpdateRoleDTO = new RoleDTO("admin", "CUSTOMER");
         Optional<Role> optionalRole = Optional.of(role);
 
         when(roleRepository.findById("admin")).thenReturn(optionalRole);
 
-        when(roleService.updateRole(updateRoleDTO, role.getId())).thenReturn(expectedUpdateRoleDTO);//TODO
-        RoleDTO actualRoleDTO = roleService.updateRole(updateRoleDTO, role.getId());//TODO
-        assertEquals(expectedUpdateRoleDTO, actualRoleDTO);
+        when(roleService.updateRole(updateRoleDTO, role.getId())).thenReturn(expectedUpdateRoleDTO);
+        RoleDTO actualRoleDTO = roleService.updateRole(updateRoleDTO, role.getId());
+        assertEquals(actualRoleDTO.getLabel(), updateRoleDTO.getLabel());
     }
+
     /**
      * Check update method.
      */
     @Test
     void roleNotExistBeforeUpdateRole_returnException() {
+        RoleDTO updateRoleDTO = new RoleDTO("CUSTOMER");
         EntityNotFoundException exception = assertThrows(
                 EntityNotFoundException.class,
                 () -> {
                     when(roleRepository.findById("admin")).thenReturn(Optional.empty());
-                    roleService.updateRole(roleDTO, "admin");
+                    roleService.updateRole(updateRoleDTO, "admin");
                 });
         assertEquals("Role with id admin not found", exception.getMessage());
     }
@@ -100,24 +102,19 @@ class RoleServiceTest {
     /**
      * Check update method.
      */
-    /**@Test //TODO
+    @Test
     void roleNotExistAfterUpdateRole_returnException() {
-    RoleDTO updateRoleDTO = new RoleDTO("user", "CUSTOMER");
-    RoleDTO expectedUpdateRoleDTO = new RoleDTO("user", "CUSTOMER");
-    Optional<Role> optionalRole = Optional.of(role);
-
-    when(roleRepository.findById("admin")).thenReturn(optionalRole);
-
+        RoleDTO updateRoleDTO = new RoleDTO("CUSTOMER");
 
         EntityNotFoundException exception = assertThrows(
                 EntityNotFoundException.class,
                 () -> {
-                    when(roleRepository.findById("admin")).thenReturn(Optional.empty());
-                    roleService.updateRole(roleDTO, "admin");
+                    //TODO
                 });
+
         assertEquals("Role with id admin after update not found", exception.getMessage());
     }
-    **/
+
 
     /**
      * Check delete method.

@@ -8,6 +8,7 @@ import com.example.lmstemplate01.web.mappers.RoleMapper;
 import com.example.lmstemplate01.web.mappers.UpdateMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,7 +69,8 @@ public class RoleService implements RoleServiceInterface {
     @Transactional(readOnly = true)
     @Override
     public List<RoleDTO> getAllRoles(Pageable pageable) {
-        List<Role> roles = (List<Role>) roleRepository.findAll(pageable);
+        Page<Role> rolePage = roleRepository.findAll(pageable);
+        List<Role> roles = rolePage.getContent();
         if (!roles.isEmpty()) {
             return roleMapper.toDto(roles);
         } else {
