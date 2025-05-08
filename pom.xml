@@ -21,6 +21,7 @@
         <mapstructprocessor.version>1.6.2</mapstructprocessor.version>
         <junit-jupiter.versio>5.11.3</junit-jupiter.versio>
         <mockito.version>5.14.2</mockito.version>
+        <postgresql.version>42.7.5</postgresql.version>
     </properties>
     <dependencies>
         <dependency>
@@ -45,9 +46,9 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

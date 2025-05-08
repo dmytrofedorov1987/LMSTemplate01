@@ -1,5 +1,6 @@
 package com.example.lmstemplate01.model.user;
 
+import com.example.lmstemplate01.model.task.Task;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,6 +22,7 @@ public class Account {
     private String username;
     @NotBlank
     private String password;
+    private String confirmPassword; //TODO
     @NotBlank
     @Email(message = "Email should be valid and unique.")
     private String email;
@@ -27,7 +30,9 @@ public class Account {
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "account_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles;     // = new HashSet<>();
+
+    private List<Task> tasks;//TODO
 
     public Account() {
     }

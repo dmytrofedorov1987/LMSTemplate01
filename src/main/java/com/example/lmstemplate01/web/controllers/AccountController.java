@@ -1,23 +1,26 @@
-/*package com.example.lmstemplate01.web.controllers;
+package com.example.lmstemplate01.web.controllers;
 
-import com.example.lmstemplate01.web.dto.user.AccountDTO;
-import com.example.lmstemplate01.services.userService.AccountService;
 import com.example.lmstemplate01.model.exceptions.MLSTemplateError;
 import com.example.lmstemplate01.model.exceptions.MLSTemplateRuntimeException;
+import com.example.lmstemplate01.services.userService.AccountService;
+import com.example.lmstemplate01.web.dto.user.AccountDTO;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/account")
 @RequiredArgsConstructor
 public class AccountController {
     private final AccountService accountService;
+    private final static Integer CURRENT_PAGE_DEFAULT = 0;
+    private final static Integer PAGE_SIZE_DEFAULT = 10;
 
     @PostMapping
     public ResponseEntity<?> createAccount(@Valid @RequestBody AccountDTO accountDTO) {
@@ -74,17 +77,14 @@ public class AccountController {
     }
 
     @GetMapping("all")
-    public ResponseEntity<?> getAllAccounts() {
-        try {
-            List<AccountDTO> list = accountService.getAllAccounts();
-            return ResponseEntity.ok(list);
-        } catch (EntityNotFoundException ex) {
-            return ResponseEntity.ok(
-                    new MLSTemplateError(HttpStatus.NOT_FOUND.value(),
-                            "There are no users."));
+    public ResponseEntity<?> getAllAccounts(@RequestParam(name = "page number") Optional<Integer> page) {
+        int currentPage = page.orElse(CURRENT_PAGE_DEFAULT);
+        if ((currentPage < accountService.totalPages(PAGE_SIZE_DEFAULT)) && (currentPage >= CURRENT_PAGE_DEFAULT)) {
+            return ResponseEntity.ok(accountService.getAllAccounts(PageRequest.of(currentPage, PAGE_SIZE_DEFAULT)));
         }
+        return ResponseEntity.ok(new MLSTemplateError(HttpStatus.BAD_REQUEST.value(), "Page Number is not correct"));
     }
 
 }
 
- */
+

@@ -77,7 +77,7 @@ public class RoleController {
     @GetMapping("/all")
     public ResponseEntity<?> getAllRoles(@RequestParam(name = "page_number") Optional<Integer> page) {
         int currentPage = page.orElse(CURRENT_PAGE_DEFAULT);
-        if (currentPage < roleService.totalPages(PAGE_SIZE_DEFAULT)) {
+        if ((currentPage < roleService.totalPages(PAGE_SIZE_DEFAULT)) && (currentPage >= CURRENT_PAGE_DEFAULT)) {
             return ResponseEntity.ok(roleService.getAllRoles(PageRequest.of(currentPage, PAGE_SIZE_DEFAULT)));
         }
             return ResponseEntity.ok(

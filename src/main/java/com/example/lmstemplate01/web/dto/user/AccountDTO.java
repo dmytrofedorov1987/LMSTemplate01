@@ -25,7 +25,7 @@ public class AccountDTO {
     @FieldUnique(field = "email", table = "Account")
     private String email;
 
-    private List<String> rolesId = new ArrayList<>();
+    private List<String> rolesId = new ArrayList<>(); // List<String> - String is not Role.
 
     @JsonCreator
     public AccountDTO(@JsonProperty String username,

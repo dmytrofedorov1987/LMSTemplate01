@@ -18,7 +18,7 @@ public class Role {
     private String id;
     private String label;
     @ManyToMany(mappedBy = "roles")
-    private Set<Account> users = new HashSet<>();
+    private Set<Account> users;       // = new HashSet<>();
 
     public Role(String id, String label) {
         this.id = id;

@@ -1,17 +1,19 @@
 package com.example.lmstemplate01.services.userService;
 
-import com.example.lmstemplate01.web.dto.user.AccountDTO;
+import com.example.lmstemplate01.model.exceptions.MLSTemplateRuntimeException;
 import com.example.lmstemplate01.model.user.Account;
 import com.example.lmstemplate01.repositoryJPA.userRepository.AccountRepository;
 import com.example.lmstemplate01.repositoryJPA.userRepository.RoleRepository;
-import com.example.lmstemplate01.model.exceptions.MLSTemplateRuntimeException;
+import com.example.lmstemplate01.web.dto.user.AccountDTO;
+import com.example.lmstemplate01.web.mappers.UpdateMapper;
 import com.example.lmstemplate01.web.mappers.UserMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,6 +22,7 @@ public class AccountService implements AccountServiceInterface {
     private final AccountRepository accountRepository;
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
+    private final UpdateMapper updateMapper;
 
     @Transactional
     @Override
@@ -39,28 +42,14 @@ public class AccountService implements AccountServiceInterface {
         return userMapper.toDto(account);
     }
 
-
     @Transactional
     @Override
     public AccountDTO updateAccount(AccountDTO accountDTO, Long id) {
         Account account = accountRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Account with id " + id + " not found"));
-        if (!(accountDTO.getUsername() == null)) {
-            account.setUsername(accountDTO.getUsername());
-        }
-        if (!(accountDTO.getEmail() == null)) {
-            account.setEmail(accountDTO.getEmail());
-        }
-        if (!(accountDTO.getPassword() == null)) {
-            account.setPassword(accountDTO.getPassword());
-        }
-        if (!(accountDTO.getRoles().isEmpty())) {
-            accountDTO.getRoles().forEach(roleId ->
-                    account.addRole(roleRepository.findById(roleId)
-                            .orElseThrow(() -> new EntityNotFoundException("Role with id " + roleId + " not found"))));
-        }
-        accountRepository.save(account);
-        return mapperAccount.toAccountDTO(account);
+        updateMapper.updateAccount(accountDTO, account);
+       // accountRepository.save(account);//TODO
+        return userMapper.toDto(account);
     }
 
     @Transactional
@@ -78,17 +67,16 @@ public class AccountService implements AccountServiceInterface {
     public AccountDTO getAccount(Long id) {
         Account account = accountRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Account with id " + id + " not found"));
-        return mapperAccount.toAccountDTO(account);
+        return userMapper.toDto(account);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<AccountDTO> getAllAccounts() {
-        List<Account> users = accountRepository.findAll();
+    public List<AccountDTO> getAllAccounts(Pageable pageable) {
+        Page<Account> accounts = accountRepository.findAll(pageable);
+        List<Account> users = accounts.getContent();
         if (!users.isEmpty()) {
-            List<AccountDTO> usersDTO = new ArrayList<>();
-            users.forEach(account -> usersDTO.add(mapperAccount.toAccountDTO(account)));
-            return usersDTO;
+            return userMapper.toDto(users);
         } else {
             throw new EntityNotFoundException();
         }
@@ -96,8 +84,21 @@ public class AccountService implements AccountServiceInterface {
 
     @Transactional(readOnly = true)
     @Override
+    public boolean isTaskOwner(Long accountId, Long taskId) {
+        //TODO
+        return true;
+    }
+
+
+    @Transactional(readOnly = true)
+    @Override
     public long count() {
         return accountRepository.count();
+    }
+
+    public int totalPages(int size) {
+        long totalUsers = accountRepository.count();
+        return (int) (totalUsers / size) + (totalUsers % size == 0 ? 0 : 1);
     }
 
 }
