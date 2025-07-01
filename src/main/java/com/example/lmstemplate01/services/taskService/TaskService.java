@@ -1,13 +1,27 @@
 package com.example.lmstemplate01.services.taskService;
 
+import com.example.lmstemplate01.model.task.Task;
+import com.example.lmstemplate01.repositoryJPA.taskRepository.TaskRepository;
 import com.example.lmstemplate01.web.dto.task.TaskDTO;
+import com.example.lmstemplate01.web.mappers.TaskMapper;
+import com.example.lmstemplate01.web.mappers.UpdateMapper;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-public class TaskService implements TaskServiceInterface { //TODO
+@RequiredArgsConstructor
+public class TaskService implements TaskServiceInterface {
+
+    private final TaskRepository taskRepository;
+
+    private final TaskMapper taskMapper;
+
+    private final UpdateMapper updateMapper;
 
     @Override
     public TaskDTO createTask(TaskDTO taskDTO) {
@@ -24,9 +38,12 @@ public class TaskService implements TaskServiceInterface { //TODO
 
     }
 
+    @Transactional(readOnly = true)
     @Override
     public TaskDTO getTask(Long taskId) {
-        return null;
+        Task task = taskRepository.findById(taskId).orElseThrow(
+                () -> new EntityNotFoundException("Task with id " + taskId + " not found"));
+        return taskMapper.toDTO(task);
     }
 
     @Override

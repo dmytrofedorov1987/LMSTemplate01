@@ -19,9 +19,13 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AccountService implements AccountServiceInterface {
+
     private final AccountRepository accountRepository;
+
     private final RoleRepository roleRepository;
+
     private final UserMapper userMapper;
+
     private final UpdateMapper updateMapper;
 
     @Transactional
@@ -31,7 +35,7 @@ public class AccountService implements AccountServiceInterface {
             throw new MLSTemplateRuntimeException("User with name " + accountDTO.getUsername() + " exists.");
         }
         Account account = new Account();
-        if (!(accountDTO.getRolesId().isEmpty())) {
+        if (!(accountDTO.getRolesId().isEmpty())) {  //TODO
             Account finalAccount = account;
             accountDTO.getRolesId().forEach(roleId ->
                     finalAccount.addRole(roleRepository.findById(roleId)

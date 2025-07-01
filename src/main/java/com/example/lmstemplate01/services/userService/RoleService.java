@@ -19,8 +19,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class RoleService implements RoleServiceInterface {
+
     private final RoleRepository roleRepository;
+
     private final RoleMapper roleMapper;
+
     private final UpdateMapper updateMapper;
 
     @Transactional

@@ -23,7 +23,7 @@ public class AccountDTO {
     private Long id;
 
     @NotNull(message = "UserName must be not null", groups = {OnUpdate.class, OnCreate.class})
-    @Length(max = 255, message = "UserName must be smaller then 255 symbols", groups = {OnUpdate.class, OnCreate.class})
+    @Length(max = 255, message = "UserName must be smaller than 255 symbols", groups = {OnUpdate.class, OnCreate.class})
     @FieldUnique(field = "username", table = "Account")
     private String username;
 
