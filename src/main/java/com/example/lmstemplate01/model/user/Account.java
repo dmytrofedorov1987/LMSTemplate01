@@ -16,6 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class Account {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

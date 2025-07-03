@@ -14,15 +14,21 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class Task {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotBlank(message = "Title can not be empty.")
     private String title;
+
     private String description;
+
     @NotBlank
     private Status status;
+
     private LocalDateTime expirationDate;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     Account account;

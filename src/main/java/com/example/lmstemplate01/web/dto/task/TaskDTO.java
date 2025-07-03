@@ -29,7 +29,9 @@ public class TaskDTO {//TODO
     private Status status;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime expirationDate;
+
+    
 
 }

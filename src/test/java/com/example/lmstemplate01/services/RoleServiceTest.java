@@ -31,10 +31,13 @@ class RoleServiceTest {
 
     @Mock
     private RoleRepository roleRepository;
+
     @Mock
     private RoleMapper roleMapper;
+
     @Mock
     private UpdateMapper updateMapper;
+
     @InjectMocks
     private RoleService roleService;
 
@@ -43,7 +46,7 @@ class RoleServiceTest {
     private RoleDTO roleDTO;
 
     @BeforeEach
-    void setUpRoleDTO() {
+    void setUp() {
         role = new Role("admin", "ADMIN");
         roleDTO = new RoleDTO("admin", "ADMIN");
     }
