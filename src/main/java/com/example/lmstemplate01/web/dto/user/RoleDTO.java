@@ -22,4 +22,7 @@ public class RoleDTO {
         this.label = label;
     }
 
+    public RoleDTO( String label) {
+        this.label = label;
+    }
 }

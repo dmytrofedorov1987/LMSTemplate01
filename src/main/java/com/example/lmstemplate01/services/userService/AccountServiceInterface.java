@@ -2,6 +2,7 @@ package com.example.lmstemplate01.services.userService;
 
 
 import com.example.lmstemplate01.web.dto.user.AccountDTO;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -14,7 +15,9 @@ public interface AccountServiceInterface {
 
     AccountDTO getAccount(Long id);
 
-    List<AccountDTO> getAllAccounts();// Need to retrieve PageRequest?
+    List<AccountDTO> getAllAccounts(Pageable pageable);
+
+    boolean isTaskOwner(Long accountId, Long taskId);
 
     long count();
 }

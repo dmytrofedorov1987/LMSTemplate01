@@ -14,7 +14,7 @@ public interface RoleServiceInterface {
 
     RoleDTO getRole(String id);
 
-    List<RoleDTO> getAllRoles(Pageable pageable);// Need to retrieve PageRequest?
+    List<RoleDTO> getAllRoles(Pageable pageable);
 
     long count();
 
